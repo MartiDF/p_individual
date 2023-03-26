@@ -15,7 +15,3 @@ function options(){
 	// TODO: Open options menu
 	console.log("Options menu button");
 }
-
-function practica2(){
-	loadpage("./pi_2/index.html");
-}

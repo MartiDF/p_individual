@@ -1,0 +1,73 @@
+#title{
+	font-size: 28px;
+	line-height: 75px;
+	font-family: 'Courier New', Courier, monospace;
+	font-style: normal;
+	font-weight: bolder;
+}
+
+#subtitle{
+	font-size: 24px;
+	line-height: 90px;
+	font-family: 'Courier New', Courier, monospace;
+	font-style: normal;
+	font-weight: bolder;
+	text-align: left;
+}
+
+.link{
+	display: block;
+	font-size: 18px;
+	line-height: 90px;
+	font-family: 'Courier New', Courier, monospace;
+	font-style: normal;
+	text-align: center;
+}
+
+html{
+	background-color: rgb(170, 131, 131);
+}
+
+.cartes{
+	grid-column: 4;
+	grid-row: 1;
+	text-align: center;
+}
+
+.menu-object{
+	display:block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 500px;
+	height: 75px;
+	font-size: 16px;
+	margin-top: 10px;
+	font-family: 'Courier New', Courier, monospace;
+}
+
+p{
+	text-align: center;
+}
+
+button.menu-object{
+	background-color: rgb(255, 117, 117);
+	font-size: 18px;
+	width: 500px;
+}
+
+button.menu-object:active{
+	background-color: rgb(253, 81, 81);
+	color:cornsilk;
+	font-size: 20px;
+	width: 500px;
+	height: 70px;
+	font-style: oblique;
+}
+
+button.menu-object:hover:not(:active){
+	background-color: rgb(255, 160, 160);
+	font-size: 22px;
+	width: 600px;
+	height: 85px;
+}
+
