@@ -7,7 +7,7 @@ function start_game(){
 function phaser_game(){
 	name = prompt("User name");
 	sessionStorage.setItem("username", name);
-	loadpage("./html/phasergame.html");
+	loadpage("./html/phaserGame.html");
 }
 
 function phaser_game_arcade(){
