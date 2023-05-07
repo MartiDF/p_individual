@@ -3,20 +3,17 @@
 	<head>
 		<link rel="stylesheet" href="../styles/main.css">
 		<script src="../js/loader.js"></script>
-		<title> Memory - Load</title>
+		
+		
+		<title> Memory - Partides guardades </title>
 	</head>
 	<body>
-		<div id="saves_id">
-			<p class="menu-object" id="title">Save files</p>
-			<div v-for="(save, indx) in saves">
-				<button class="menu-object" v-on:click="load(indx)"> 
-					{{save.username}} 
-				</button>
-			</div>
-		</div>
-		<a class="menu-object" href="../">GoToMenu</a>
+		<p class="menu-object" id="title">PARTIDES GUARDADES</p>
+		<button class="menu-object" id="firstName" onclick="load_game(1)">Jugador/a 1</button>
+		<button class="menu-object" id="secondName" onclick="load_game(2)">Jugador/a 2</button>
+		<button class="menu-object" id="thirdName" onclick="load_game(3)">Jugador/a 3</button>
+		<button class="menu-object" onclick='loadpage("..")'> Torna al menú </button>
 	</body>
 	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
 	<script src="../js/load.js"></script>
 </html>
-

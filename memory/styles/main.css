@@ -1,39 +1,77 @@
-input[type=number]{
-	height: 3rem;
-    font-size: 1.3rem;
-    font-weight: bold;
-    width: 3rem;
-    text-align: center;
+#title{
+	font-size: 28px;
+	line-height: 75px;
+	color:rgb(57, 229, 0);
+	font-family: 'Courier New', Courier, monospace;
+	font-style: normal;
+	font-weight: bolder;
 }
 
-#title{
-	font-size: 26px;
-	line-height: 75px;
+#subtitle{
+	font-size: 24px;
+	line-height: 90px;
+	color:rgb(57, 229, 0);
+	font-family: 'Courier New', Courier, monospace;
+	font-style: normal;
+	font-weight: bolder;
+	text-align: left;
+}
+
+.link{
+	display: block;
+	font-size: 18px;
+	line-height: 90px;
+	font-family: 'Courier New', Courier, monospace;
+	font-style: normal;
+	text-align: center;
+}
+
+html{
+	background-color: #131313;
+}
+
+.cartes{
+	grid-column: 4;
+	grid-row: 1;
+	text-align: center;
 }
 
 .menu-object{
 	display:block;
 	margin-left: auto;
 	margin-right: auto;
-	width: 300px;
+	color:rgb(57, 229, 0);
+	width: 500px;
 	height: 75px;
 	font-size: 16px;
 	margin-top: 10px;
+	font-family: 'Courier New', Courier, monospace;
 }
 
 p{
 	text-align: center;
 }
 
-button.menu-object:active{
+button.menu-object{
+	background-color: rgb(139, 255, 135);
+	color:rgb(85, 86, 85);
 	font-size: 18px;
-	width: 275px;
+	width: 500px;
+}
+
+button.menu-object:active{
+	background-color: rgb(17, 255, 0);
+	color:rgb(0, 0, 0);
+	font-size: 20px;
+	width: 500px;
 	height: 70px;
+	font-style: oblique;
 }
 
 button.menu-object:hover:not(:active){
+	background-color: rgb(57, 229, 0);
 	font-size: 22px;
-	width: 325px;
+	width: 600px;
 	height: 85px;
 }
 

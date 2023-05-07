@@ -1,7 +1,7 @@
 const back = "../resources/back.png";
 const items = ["../resources/cb.png","../resources/co.png","../resources/sb.png",
 "../resources/so.png","../resources/tb.png","../resources/to.png"];
-var json = localStorage.getItem("config") || '{"cards":2,"dificulty":"hard"}';
+var json = localStorage.getItem("config") || '{"cards":2,"difficulty":"hard"}';
 options_data = JSON.parse(json);
 
 var game = new Vue({
@@ -10,7 +10,7 @@ var game = new Vue({
 		username:'',
 		current_card: [],
 		items: [],
-		difficulty: options_data.dificulty,
+		difficulty: options_data.difficulty,
 		num_cards: options_data.cards,
 		bad_clicks: 0,
 		enEspera: true

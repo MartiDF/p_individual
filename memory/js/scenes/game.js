@@ -1,4 +1,9 @@
-var json = localStorage.getItem("config") || '{"cards":2,"dificulty":"easy"}';
+var default_config = {
+	cards: 2,
+	difficulty: "easy",
+	punts: null
+};
+var json = localStorage.getItem("config") || JSON.stringify(default_config);
 options_data = JSON.parse(json);
 
 class GameScene extends Phaser.Scene {
@@ -10,7 +15,7 @@ class GameScene extends Phaser.Scene {
 		this.correct = 0;
 		this.mulDif = 0;
 		this.nCards = options_data.cards;
-		this.difficulty = options_data.dificulty;
+		this.difficulty = options_data.difficulty;
 		this.i = 0;
 		this.enEspera = false;
 	}
@@ -33,7 +38,7 @@ class GameScene extends Phaser.Scene {
 		switch (this.difficulty) {
 			case "hard":
 				this.mulDif = 2.5;
-				tempsEspera = 500;
+				tempsEspera = 1000;
 				break;
 			case "normal":
 				this.mulDif = 1.7;
@@ -51,7 +56,7 @@ class GameScene extends Phaser.Scene {
 		this.cameras.main.setBackgroundColor(0xBFFCFF);
 
 		for (let i = 0; i < arraycards.length; i++) {
-			this.add.image(250 + i * 100, 300, arraycards[i]);
+			this.add.image(350 + i * 100, 300, arraycards[i]);
 		}
 
 		this.time.delayedCall(tempsEspera, () => {
@@ -59,7 +64,7 @@ class GameScene extends Phaser.Scene {
 			this.cards = this.physics.add.staticGroup();
 
 			for (let i = 0; i < arraycards.length; i++) {
-				this.cards.create(250 + i * 100, 300, 'back');
+				this.cards.create(350 + i * 100, 300, 'back');
 			}
 
 			let i = 0;
@@ -68,36 +73,37 @@ class GameScene extends Phaser.Scene {
 				i++;
 				card.setInteractive();
 				card.on('pointerup', () => {
-					if (!this.enEspera) {
-						card.disableBody(true, true);
-						if (this.firstClick) {
-							if (this.firstClick.card_id !== card.card_id) {
-								this.score -= 20 * this.mulDif;
-								this.firstClick.enableBody(false, 0, 0, true, true);
+					// Si el joc està pausat, no es pot interaccionar
+					if (this.enEspera) return;
+					card.disableBody(true, true);
+					if (this.firstClick) {
+						if (this.firstClick.card_id !== card.card_id) { // Si és incorrecte
+							let firstCard = this.firstClick;
+							this.score -= 20 * this.mulDif;
+							this.enEspera = true;
+							this.time.delayedCall(1000, () => {
+								firstCard.enableBody(false, 0, 0, true, true);
 								card.enableBody(false, 0, 0, true, true);
-								this.enEspera = true;
+								this.enEspera = false;
+							})
+							if (this.score <= 0) {
+								alert("Fi de la partida");
+								loadpage("../");
+							}
+						}
+						else { // És correcte
+							this.correct++;
+							if (this.correct >= this.nCards) {
 								this.time.delayedCall(1000, () => {
-									this.firstClick.enableBody(false, 0, 0, true, true);
-									card.enableBody(false, 0, 0, true, true);
-									this.enEspera = true;
+								alert("Has guanyat amb " + this.score + " punts.");
+								loadpage("../");
 								})
-								if (this.score <= 0) {
-									alert("Fi de la partida");
-									loadpage("../");
-								}
 							}
-							else {
-								this.correct++;
-								if (this.correct >= 2) {
-									alert("Has guanyat amb " + this.score + " punts.");
-									loadpage("../");
-								}
-							}
-							this.firstClick = null;
 						}
-						else {
-							this.firstClick = card;
-						}
+						this.firstClick = null;
+					}
+					else { // És el primer clic
+						this.firstClick = card;
 					}
 				}, card);
 			});
@@ -115,10 +121,9 @@ function get_cards(nCards) {
 		triaCarta.push(ramdom);
 	}
 	Phaser.Utils.Array.Shuffle(triaCarta);
-	console.log(triaCarta);
 	return triaCarta;
 }
 
-function punts() {
+function get_punts() {
 	return this.score;
 }
