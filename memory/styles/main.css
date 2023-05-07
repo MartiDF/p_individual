@@ -75,3 +75,14 @@ button.menu-object:hover:not(:active){
 	height: 85px;
 }
 
+#game_area{
+	margin: auto;
+	width: 50%;
+	border: 3px solid rgb(57, 229, 0);
+}
+
+canvas{
+	
+	
+	padding: 10px;
+}

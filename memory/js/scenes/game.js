@@ -14,6 +14,7 @@ class GameScene extends Phaser.Scene {
 		this.score = 100;
 		this.correct = 0;
 		this.mulDif = 0;
+		this.xCarta = 320;
 		this.nCards = options_data.cards;
 		this.difficulty = options_data.difficulty;
 		this.i = 0;
@@ -55,8 +56,17 @@ class GameScene extends Phaser.Scene {
 		let arraycards = get_cards(this.nCards);
 		this.cameras.main.setBackgroundColor(0xBFFCFF);
 
+		if(this.nCards == 3){
+			this.xCarta = 220;
+		}
+		else if(this.nCards == 4){
+			this.xCarta = 115;
+		}
+        console.log(this.xCarta);
+
+
 		for (let i = 0; i < arraycards.length; i++) {
-			this.add.image(350 + i * 100, 300, arraycards[i]);
+			this.add.image(this.xCarta + i * 100, 300, arraycards[i]);
 		}
 
 		this.time.delayedCall(tempsEspera, () => {
@@ -64,7 +74,7 @@ class GameScene extends Phaser.Scene {
 			this.cards = this.physics.add.staticGroup();
 
 			for (let i = 0; i < arraycards.length; i++) {
-				this.cards.create(350 + i * 100, 300, 'back');
+				this.cards.create(this.xCarta + i * 100, 300, 'back');
 			}
 
 			let i = 0;
