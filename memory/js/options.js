@@ -1,10 +1,10 @@
 var options = function(){
 	// Aquí dins hi ha la part privada de l'objecte
 	var options_data = {
-		cards:2, dificulty:"hard"
+		cards:2, dificulty:"easy"
 	};
 	var load = function(){
-		var json = localStorage.getItem("config") || '{"cards":2,"dificulty":"hard"}';
+		var json = localStorage.getItem("config") || '{"cards":2,"dificulty":"easy"}';
 		options_data = JSON.parse(json);
 	};
 	var save = function(){
@@ -15,7 +15,7 @@ var options = function(){
 		el: "#options_id",
 		data: {
 			num: 2,
-			dificulty: "normal"
+			dificulty: "easy"
 		},
 		created: function(){
 			this.num = options_data.cards;

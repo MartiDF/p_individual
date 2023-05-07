@@ -2,6 +2,9 @@ var gameObj = function (){
 	const back = "../resources/back.png";
 	const items = ["../resources/cb.png","../resources/co.png","../resources/sb.png",
 	"../resources/so.png","../resources/tb.png","../resources/to.png"];
+	var json = localStorage.getItem("config") || '{"cards":2,"dificulty":"hard"}';
+	options_data = JSON.parse(json);
+	
 	let l_partida = null;
 	if (sessionStorage.idPartida && localStorage.partides){
 		let arrayPartides = JSON.parse(localStorage.partides);
@@ -14,8 +17,10 @@ var gameObj = function (){
 			username:'',
 			current_card: [],
 			items: [],
-			num_cards: 2,
-			bad_clicks: 0
+			difficulty: options_data.dificulty,
+			num_cards: options_data.cards,
+			bad_clicks: 0,
+			enEspera: true
 		},
 		created: function(){
 			if (l_partida){
@@ -33,16 +38,49 @@ var gameObj = function (){
 				this.items = this.items.concat(this.items); // Dupliquem els elements
 				this.items.sort(function(){return Math.random() - 0.5}); // Array aleatòria
 				for (var i = 0; i < this.items.length; i++){
-					this.current_card.push({done: false, texture: back});
+					this.current_card.push({done: false, texture: this.items[i]});
 				}
 			}
 			sessionStorage.clear();
+
+			let tempsEspera = 0;
+			switch(this.difficulty){
+				case "hard":
+					this.mulDif = 2.5;
+					tempsEspera = 500;
+					break;
+				case "normal":
+					this.mulDif = 1.7;
+					tempsEspera = 1500;
+					break;
+				case "easy":
+					this.mulDif = 1;
+					tempsEspera = 3000;
+					break;
+				default:
+					break;
+			}
+	
+			this.myTimeout = setTimeout(this.timeout, tempsEspera);
+			this.pausa = false;
 		},
 		methods: {
+
+			timeout: function(){
+				console.log(this.difficulty);
+				this.pausa = true;
+				for (var i = 0; i < this.items.length; i++) {
+					Vue.set(this.current_card, i, {done: false, texture: back});
+				}
+				this.enEspera = false;
+				clearTimeout(this.timeout);
+			},
+
 			clickCard: function(i){
 				if (!this.current_card[i].done && this.current_card[i].texture === back)
 					Vue.set(this.current_card, i, {done: false, texture: this.items[i]});
 			},
+
 			save: function(){
 				fetch("../php/save.php", {
 					method: "POST",
@@ -62,13 +100,14 @@ var gameObj = function (){
 					this.local_save();
 				});
 			},
+
 			local_save: function(){
 				let partida = {
 					username: this.username,
 					current_card: this.current_card,
 					items: this.items,
 					num_cards: this.num_cards,
-					bad_clicks: this.bad_clicks
+					bad_clicks: this.bad_clicks,
 				}
 				let arrayPartides = [];
 				if(localStorage.partides){
@@ -80,36 +119,40 @@ var gameObj = function (){
 				loadpage("../");
 			}
 		},
+
 		watch: {
 			current_card: function(value){
-				if (value.texture === back) return;
-				var front = null;
-				var i_front = -1;
-				for (var i = 0; i < this.current_card.length; i++){
-					if (!this.current_card[i].done && this.current_card[i].texture !== back){
-						if (front){
-							if (front.texture === this.current_card[i].texture){
-								front.done = this.current_card[i].done = true;
-								this.num_cards--;
-							}
-							else{
-								Vue.set(this.current_card, i, {done: false, texture: back});
-								Vue.set(this.current_card, i_front, {done: false, texture: back});
-								this.bad_clicks++;
-								break;
-							}
+			if (value.texture === back || this.enEspera) return;
+			var front = null;
+			var i_front = -1;
+			for (var i = 0; i < this.current_card.length; i++){
+				if (!this.current_card[i].done && this.current_card[i].texture !== back){
+					if (front){
+						if (front.texture === this.current_card[i].texture){
+							front.done = this.current_card[i].done = true;
+							this.num_cards--;
 						}
 						else{
-							front = this.current_card[i];
-							i_front = i;
+						
+
+							Vue.set(this.current_card, i, {done: false, texture: back});
+							Vue.set(this.current_card, i_front, {done: false, texture: back});
+							this.bad_clicks++;
+							break;
 						}
 					}
-				}			
-			}
+					else{
+						front = this.current_card[i];
+						i_front = i;
+					}
+				}
+			}			
+		}
 		},
 		computed: {
 			score_text: function(){
-				return 100 - this.bad_clicks * 20;
+				let puntuacio = 100 - this.bad_clicks * 20 * this.mulDif;
+				return puntuacio;
 			}
 		}
 	});
